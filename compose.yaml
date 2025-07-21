@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  streamlit-app:
+    build: .
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    depends_on:
+      - ai-runner
+
+  ai-runner:
+    provider:
+      type: model
+      options:
+        model: ${MODEL:-ai/llama3.2:latest}
